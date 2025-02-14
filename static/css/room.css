@@ -1,0 +1,691 @@
+.content{
+    width: 100%;
+}
+.mainroomdiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.buildingdiv{
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f8ff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+.roomdiv{
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f8ff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+.allroomdiv{
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f8ff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+.heading{
+    display: flex;
+    flex-direction: column;
+    background-color: #e3edf8;
+    border-color: #dfeaf5;
+    color: #444;
+    margin-top: 55px;
+}
+.inputfield{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.roomoverview{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.room-actions {
+    display: flex;
+    justify-content: flex-start;
+    /* Align buttons to the left */
+    margin-top: 5px;
+    /* Space between room info and buttons */
+    flex-direction: column;
+    row-gap: 10px;
+}
+.singleroom{
+    background-color: #bbd9f7;
+    display: flex;
+    flex-direction: row;
+    column-gap: 15px;
+    padding: 15px;
+    border-radius: 6px;
+}
+.small-button {
+    font-size: 12px;
+    /* Smaller font size */
+    padding: 5px 10px;
+    /* Space between buttons */
+}
+
+.building-box {
+    border: 1px solid #ccc;
+    /* Optional: Add border around building */
+    padding: 10px;
+    /* Optional: Add padding */
+    margin-bottom: 10px;
+    /* Space between buildings */
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0 ,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* my css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-image: url('/static/images/Screenshot(38).avif');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Container for the entire page content */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/* Headings styling (centered and bordered) */
+h1,
+h2,
+h3 {
+    color: #333;
+    display: inline-block;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Main heading (Room Management) */
+h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    border-color: #000000;
+    background-color: #000000;
+
+}
+
+/* Subheadings (Add Building, Add Room, Building and Room Overview) */
+h2 {
+    font-size: 1.8rem;
+    color: #444;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: #007bff;
+    font-weight: 500;
+    border-color: #007bff;
+}
+
+/* Form styling to fill available width */
+.formfield {
+    margin: 20px;
+    padding: 25px;
+    background-color: #f0f8ff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+}
+
+/* Form labels */
+.formfield label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+    text-wrap-mode: nowrap;
+    margin-right: 5px;
+}
+
+/* Input fields, select, and buttons */
+.formfield input,
+.formfield select,
+.formfield button {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #4a9fcc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+/* Input and select field focus state */
+.formfield input:focus,
+.formfield select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Form buttons */
+.formfield button {
+    background-color: #00b906;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    margin-top: 6px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.formfield button:hover {
+    background-color: #218838;
+    transform: translateY(-3px);
+
+}
+
+/* Building and Room Overview */
+.building-box {
+    margin-bottom: 40px;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+.building-box h3 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
+}
+
+/* Room details container */
+.room-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    column-gap: 15px;
+}
+
+/* Sub-container for each room property (Room, Floor, Rows, Columns, Total Seats) */
+.room-property {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    background-color: #f0f8ff;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    color: #333;
+}
+
+.room-property strong {
+    font-weight: 600;
+    color: #007bff;
+}
+
+.room-view-button {
+    text-align: center;
+    background-color: #00b906;
+    color: #fff;
+    border: none;
+    padding: 5px 10px 5px 10px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.room-edit-button{
+    background-color: #FF8C00;
+    color: #fff;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.room-delete-button{
+    background-color: #d14535;
+    color: #fff;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.room-view-button:hover {
+    background-color: #218838;
+    transform: translateY(-3px);
+}
+.room-edit-button:hover {
+    background-color: #de7f0c;
+    transform: translateY(-3px);
+}
+.room-delete-button:hover {
+    background-color: #b90c0c;
+    transform: translateY(-3px);
+}
+.room-view-button button{
+    background-color: transparent;
+}
+
+
+/* Adjust the form positioning and ensure the button stays inside the box */
+.room-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* Popup Styles */
+.room-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.popup-content {
+    position: relative;
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close-popup {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-popup:hover {
+    color: #000;
+}
+
+.popup-details {
+    margin-top: 20px;
+}
+
+.detail-row {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-label {
+    font-weight: bold;
+    width: 120px;
+    color: #333;
+}
+
+/* Update existing button styles */
+.room-view-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.room-view-button:hover {
+    background-color: #45a049;
+}
+
+
+.room-layout {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.room-layout h3 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.layout-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 120px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.column-label {
+    font-weight: bold;
+    color: #2196F3;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    background-color: #e3f2fd;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+}
+
+.seat {
+    width: 100%;
+    padding: 8px;
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #2e7d32;
+    transition: transform 0.2s;
+}
+
+.seat:hover {
+    transform: scale(1.05);
+    background-color: #c8e6c9;
+}
+
+.row-count-label {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #666;
+    padding: 5px 10px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Update popup content for better layout display */
+.popup-content {
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 5vh auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .layout-container {
+        justify-content: flex-start;
+        padding: 10px;
+    }
+    
+    .column {
+        min-width: 100px;
+    }
+    
+    .popup-content {
+        width: 95%;
+        margin: 2vh auto;
+    }
+}
+
+/* Scrollbar styling */
+.layout-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.layout-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.layout-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.layout-container::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+
+/* Add to your existing CSS */
+.seat.occupied {
+    background-color: #ffebee;
+    border-color: #ef9a9a;
+    color: #c62828;
+}
+
+/* Update the existing seat style */
+.seat {
+    width: 100%;
+    padding: 8px;
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #2e7d32;
+    transition: all 0.3s ease;
+    margin: 4px 0;
+    cursor: default;
+}
+
+
+
+/* Edit Popup Styles */
+.edit-form {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+.cancel-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #da190b;
+}
+
+
+
+#editRoomForm input{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #4a9fcc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .formfield input,
+    .formfield select,
+    .formfield button {
+        font-size: 0.95rem;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+    }
+
+    .building-box {
+        margin-bottom: 30px;
+    }
+
+    .room-property {
+        font-size: 0.95rem;
+    }
+
+    .room-button {
+        width: 100%;
+    }
+}

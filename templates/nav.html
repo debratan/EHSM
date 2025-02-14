@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} App {% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/nav.css"> 
+</head>
+<body>
+    <nav>
+        <a class="navlist" href="/"><span class="btext">Home</span></a>
+        <a class="navlist {% if request.path == '/room' %}active{% endif %}" href="/room"><span class="btext">Room Management</span></a>
+        <a class="navlist {% if request.path == '/exam' %}active{% endif %}" href="/exam"><span class="btext">Exam Schedule</span></a>
+        <a class="navlist {% if request.path == '/seat-allocation' %}active{% endif %}" href="/seat-allocation"><span class="btext">Seat Allocation</span></a>
+        <a class="navlist" href="/logout"><span class="btext">Logout</span></a>
+        
+        <!-- Add user section -->
+        <div class="user-section">
+            {% if session.get('user_id') %}
+                <div class="username">
+                    <span>User: {{ session.get('user_id') }}</span>
+                </div>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

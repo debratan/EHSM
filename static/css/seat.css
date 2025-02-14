@@ -1,0 +1,486 @@
+* {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  background-image: url('/static/images/Screenshot(38).avif');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #333;
+  line-height: 1.6;
+}
+
+.content {
+  margin-top: 55px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.maincontainer {
+  display: flex;
+  flex-direction: row;
+  column-gap: 20px;
+  justify-content: center;
+  align-items: center;
+  min-width: 95%;
+  padding-bottom: 20px;
+
+  background-color: #d3ebff;
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12.7px);
+  -webkit-backdrop-filter: blur(12.7px);
+}
+
+.subcontainer {
+  display: flex;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  min-width: 550px;
+  background: rgba(255, 255, 255, 0.33);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12.7px);
+  -webkit-backdrop-filter: blur(12.7px);
+}
+
+.seatdiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+
+}
+
+.select-branch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.inputfield {
+  display: flex;
+  flex-direction: row;
+  column-gap: 15px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.inputfield label {
+  text-wrap-mode: nowrap;
+}
+
+#allocationForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#allocationForm select , #seatpattern {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #4a9fcc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+#allocateButton ,#arrangeSeatsButton ,#printseat , #allocatedSeatsTable button{
+  padding: 10px;
+  margin: 10px;
+  background-color: #00b906;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#allocateButton:hover ,#arrangeSeatsButton:hover , #allocatedSeatsTable button:hover{
+  background-color: #218838;
+  transform: translateY(-3px);
+}
+
+
+
+  .statistics {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    border: 1px solid #ddd;
+  }
+
+  .statistics h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 1.2em;
+    color: #333;
+  }
+
+  .statistics #seatStatistics,
+  .statistics #studentStatistics {
+    padding: 10px 0;
+  }
+
+  .statistics p {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .statistics span {
+    font-weight: bold;
+    color: #2196f3;
+  }
+
+  /* Add warning color when seats are insufficient */
+  .statistics.insufficient-seats #studentStatistics span {
+    color: #ff0000;
+  }
+
+  /* Adjust main container to prevent overlap */
+  .maincontainer {
+    padding-right: 280px; /* Add padding to prevent content from going under statistics */
+  }
+
+  /* Make statistics more visible with a subtle hover effect */
+  .statistics:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+
+  /* Add a small indicator when statistics change */
+  @keyframes highlight {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(33, 150, 243, 0.1); }
+    100% { background-color: transparent; }
+  }
+
+  .statistics span.changed {
+    animation: highlight 1s ease;
+  }
+
+#allocatedSeatsTable {
+  background: rgb(214 239 249 / 80%);
+  border-radius: 4px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+#allocatedSeatsTable th, #allocatedSeatsTable td {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+  padding: 12px;
+  font-size: 1.1em;
+    font-weight: 500;
+}
+.pattern-select{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+#allocatedSeatsTable input, .checkbox{
+  width: 20px;
+  height: 20px;
+}
+
+.main-visual{
+  background-color: #d3ebff;
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12.7px);
+  -webkit-backdrop-filter: blur(12.7px);
+  width: 95%;
+  padding: 25px;
+  margin-top: 30px;
+}
+.main-visual h1{
+  text-align: center;
+  margin-top: 0px;
+}
+#roomContainer h3{
+  font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
+}
+#roomContainer h4{
+  margin: 5px;
+}
+
+.building {
+  margin: 20px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+#visualizationContainer .floor{
+  flex-direction: column;
+}
+
+.floor {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid #666;
+  border-radius: 4px;
+}
+
+.room-card {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  transition: box-shadow 0.3s;
+  margin: 10px;
+}
+.room-card input, .room-card p, .room-card h5{
+  margin: 0px;
+  padding: 0px;
+  text-wrap: nowrap;
+}
+.room-card input{
+  width: 20px;
+  height: 20px;
+}
+
+.room-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.seating-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5px;
+}
+
+.seating-table th,
+.seating-table td {
+  border: 1px solid #999;
+  padding: 5px;
+  text-align: center;
+}
+
+.occupied {
+  background-color: #90ee90;
+  /* Light green for occupied seats */
+}
+
+.empty {
+  background-color: #ffcccb;
+  /* Light red for empty seats */
+}
+.red-background{
+  background-color: #ffd3d3;
+}
+.room-card.insufficient-seats {
+  border-color: #ff0000;
+}
+
+
+
+
+
+
+
+/* Statistics Popup Styles */
+.statistics-popup {
+    position: fixed; /* This ensures it stays fixed on screen */
+    top: 80px;      /* Distance from top, adjust if needed */
+    right: 20px;    /* Distance from right edge */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    width: 300px;
+    z-index: 100000; /* Very high z-index to stay above everything */
+    display: block;  /* Always visible by default */
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+
+/* Header styles */
+.popup-header {
+    background: #2196f3;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move; /* Indicates draggable */
+    user-select: none; /* Prevents text selection while dragging */
+}
+
+.popup-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Control buttons */
+.popup-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.popup-controls button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.popup-controls button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Content area */
+.popup-content {
+    padding: 15px;
+    background: white;
+    border-radius: 0 0 8px 8px;
+}
+
+.stats-section {
+    margin-bottom: 15px;
+}
+
+.stats-section:last-child {
+    margin-bottom: 0;
+}
+
+.stats-section h4 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stats-section p {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #444;
+}
+
+.stats-section span {
+    font-weight: 500;
+    color: #2196f3;
+}
+
+/* Minimized state */
+.statistics-popup.minimized {
+    width: 200px;
+}
+
+.statistics-popup.minimized .popup-content {
+    display: none;
+}
+
+/* Show/Hide button */
+.show-stats-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2196f3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+    z-index: 100001;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.show-stats-btn:hover {
+    background: #1976d2;
+}
+
+/* Ensure the popup stays above other elements */
+.statistics-popup {
+    transform: translate3d(0, 0, 0);
+}
+
+/* Animation for state changes */
+.statistics-popup {
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+
+
+
+
+    /* Statistics number colors */
+    .statistics-popup span {
+        font-weight: 500;
+        color: #2196f3; /* Default blue color */
+        transition: color 0.3s ease;
+    }
+
+    /* Warning state for statistics numbers */
+    .statistics-popup.insufficient-seats #studentStatistics span {
+        color: #ff0000; /* Red color when seats are insufficient */
+    }
+
+    /* Keep your existing warning styles */
+    .main-visual {
+        transition: background-color 0.3s ease;
+    }
+
+    .room-card {
+        border: 2px solid #ccc;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 8px;
+        transition: border-color 0.3s ease;
+    }

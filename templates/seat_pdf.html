@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seating Arrangement Print</title>
+    <style>
+        /* Copy the relevant styles from your original CSS */
+        .room-container {
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            page-break-inside: avoid;
+        }
+        .building-name {
+            text-align: left;
+            padding-left: 20px;
+            margin-top: 100px;
+        }
+        .floor-name{
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .seating-layout {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .branch-header {
+            display: table-row;
+        }
+
+        .branch-header div {
+            display: table-cell;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .seat-row {
+            display: table-row;
+        }
+
+        .seat {
+            display: table-cell;
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #999;
+            background-color: #e8ffe8;
+        }
+
+        .single-branch-header {
+            text-align: center;
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        .print-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .print-header h1,
+        h2,
+        h3 {
+            text-align: center;
+        }
+        .no-print{
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .no-print button{
+            width: 150px;
+            height: 50px;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 1.2em;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 20px;
+            }
+
+            .print-header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .print-header h1,
+            h2,
+            h3 {
+                text-align: center;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="print-header">
+        <h1>Siliguri Institute Of Technology</h1>
+        <h2>Examination Type: Internal</h1>
+        <h3>Seating Arrangement</h3>
+            <p>Date: <span id="currentDate"></span></p>
+    </div>
+
+    <div id="printContent"></div>
+
+    <div class="no-print">
+        <button onclick="window.print()">Print</button>
+        <button onclick="window.close()">Close</button>
+    </div>
+
+    <script>
+        window.onload = function () {
+            try {
+                // Get the seating plan HTML from sessionStorage
+                const seatingPlanHTML = sessionStorage.getItem('seatingPlanHTML');
+                if (seatingPlanHTML) {
+                    document.getElementById('printContent').innerHTML = seatingPlanHTML;
+                } else {
+                    document.getElementById('printContent').innerHTML = '<p>No seating data available.</p>';
+                }
+
+                // Set current date
+                const today = new Date();
+                document.getElementById('currentDate').textContent = today.toLocaleDateString();
+
+                // Auto-trigger print dialog if needed
+                // window.print();
+            } catch (error) {
+                console.error('Error loading print data:', error);
+                document.getElementById('printContent').innerHTML = '<p>Error loading seating arrangement.</p>';
+            }
+        };
+    </script>
+</body>
+
+</html>

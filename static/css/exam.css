@@ -1,0 +1,408 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(to bottom, #ffffff, #eaeaea);
+    color: #2d3436;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 2s ease-in-out;
+}
+.content{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Header styling */
+h1 {
+    color: #2a4043;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-bottom: 3px solid #5adccd;
+    display: inline-block;
+}
+
+/* Header for "All Scheduled Exams" */
+h2 {
+    color: #ffffff; /* Color changed to purple for a different look */
+    font-size: 1em;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 20px;
+    text-transform: uppercase;
+}
+.star{
+    color: red;
+}
+
+.inputfield{
+    display: flex;
+    float: row;
+    column-gap: 15px;
+}
+.inputfield label{
+    text-wrap: nowrap;
+}
+
+.formbutton{
+    margin: 0;
+    padding: 0;
+    width: fit-content;
+}
+.formbutton button{
+    padding: 10px 20px 10px 20px;
+}
+
+/* Form styling */
+.exam-form {
+    background-color: #f0f8ff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #ffffff;
+    transition: transform 0.3s ease;
+}
+
+.exam-form:hover {
+    transform: scale(1.02);
+}
+
+.exam-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #07101a;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.exam-form input[type="text"], .exam-form input[type="date"], .exam-form input[type="time"] {
+    width: 100%;
+    padding: 6px; /* Reduced padding */
+    margin-bottom: 12px;
+    border: 1px solid #4a9fcc;
+    border-radius: 6px;
+    font-size: 0.9em;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exam-form input[type="text"]:focus, .exam-form input[type="date"]:focus, .exam-form input[type="time"]:focus {
+    border-color: #2c566f;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(31, 207, 255, 0.2);
+}
+
+.exam-form button {
+    background-color: #00b906;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.exam-form button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(154, 47, 47, 0.1);
+}
+
+table th, table td {
+    padding: 4px 6px; /* Further reduced padding to minimize height */
+    text-align: center;
+    border: 1px solid #dfe6e9;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+/* Assign different colors to each table header */
+
+/* Assign the same blue shade to all table headers */
+table th {
+    background-color: #1c4cd1; /* Uniform blue color */
+    color: white;
+}
+
+
+table tr:hover {
+    background-color: #d6eaf8;
+    transition: background-color 0.3s ease;
+}
+
+table td form button {
+    background-color: #d14535;
+    color: white;
+    padding: 4px 8px; /* Reduced padding */
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+table td form button:hover {
+    background-color: #b90c0c;
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    table {
+        font-size: 0.6em; /* Further reduced font size */
+    }
+
+    table th, table td {
+        padding: 4px 5px; /* Further reduced padding */
+    }
+
+    form button {
+        font-size: 0.8em;
+    }
+}
+
+
+body {
+    background: linear-gradient(
+            rgba(0, 1, 10, 0.4),  /* 40% opacity for the dark overlay */
+            rgba(0, 0, 0, 0.6)   /* 60% opacity for the darker overlay */
+        ),
+        url('/static/images/wide-view-image.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+}
+
+h1 {
+    color: #000000;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+form, table {background: rgb(208 229 255 / 80%);background: rgb(214 239 249 / 80%);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 12px;
+}
+
+table th {
+    font-size: 1em;
+    text-align: center;
+}
+
+button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ff3333;
+}
+.room-edit-button{
+    background-color: #FF8C00;
+    color: #fff;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.room-edit-button:hover {
+    background-color: #de7f0c;
+    transform: translateY(-3px);
+}
+
+
+
+
+
+
+/* additional*/
+
+/* Modal container styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the modal */
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+    width: 90%; /* Adjust width to 90% of the screen */
+    max-width: 600px; /* Max width for the modal */
+    max-height: 80%; /* Ensure modal doesn't take too much height */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+   
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal content box */
+.modal-content {
+    background-color: #fff;
+    padding: 15px; /* Smaller padding */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Close button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #aaa;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
+/* Modal title */
+h2 {
+    font-size: 1.2rem; /* Smaller title font */
+    margin-bottom: 15px; /* Reduced margin */
+    text-align: center;
+    color: #333;
+}
+
+/* Modal form styling */
+.modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Add gap between rows */
+}
+
+/* Each label and input should be aligned in a row */
+.modal form .input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Small gap between label and input */
+}
+
+.modal form label {
+    font-size: 0.9rem; /* Smaller label font */
+    color: #333;
+    width: 100px; /* Fixed width for labels to keep alignment */
+}
+
+.modal form input {
+    padding: 8px; /* Smaller padding */
+    font-size: 0.9rem; /* Smaller font */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+    flex: 1; /* Make the input field take up the remaining space */
+}
+
+.modal form input:focus {
+    border-color: #007BFF;
+}
+
+/* Submit button styling */
+.submit-button {
+    padding: 8px 15px; /* Smaller button padding */
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem; /* Smaller font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive design: Adjust modal size for smaller screens */
+@media (max-width: 768px) {
+    .modal {
+        width: 95%; /* Adjust width to 95% on smaller screens */
+    }
+
+    .modal-content {
+        padding: 10px; /* Less padding */
+    }
+
+    .submit-button {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+}
+
+

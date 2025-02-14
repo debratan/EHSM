@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Management</title>
+    <link rel="stylesheet" href="/static/css/room.css">
+</head>
+
+<body>
+    {% extends "nav.html" %}
+    {% block content %}
+    <h1 class="heading">Room Management</h1>
+    <div class="mainroomdiv">
+
+
+        <!-- Form to add a building -->
+        <div class="buildingdiv">
+            <h2>Add Building</h2>
+            <form method="POST" class="formfield">
+                <div class="inputfield">
+                    <label for="building_name">Building Name:</label>
+                    <input type="text" id="building_name" name="building_name" required><br>
+                </div>
+                <div class="inputfield">
+                    <button type="submit" name="add_building">Add Building</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Form to add or edit a room -->
+        <div class="roomdiv">
+            <h2>{% if room_id %}Edit Room{% else %}Add Room{% endif %}</h2>
+            <form method="POST" action="{{ url_for('room') }}" class="formfield">
+
+                {% if room_id %}
+                <input type="hidden" id="room_id" name="room_id" value="{{ room_id }}">
+                <input type="hidden" name="edit" value="true"> <!-- Indicate that this is an edit operation -->
+                {% endif %}
+
+                <div class="inputfield">
+                    <label for="building_id">Building:</label>
+                    <select name="building_id" required>
+                        {% for building in buildings %}
+                        <option value="{{ building[0] }}" {% if building[0]==selected_building_id %}selected{% endif %}>
+                            {{ building[1] }}</option>
+                        {% endfor %}
+                    </select><br>
+                </div>
+                <div class="inputfield">
+                    <label for="room_number">Room Number:</label>
+                    <input type="text" id="room_number" name="room_number" value="{{ room_number or '' }}" required><br>
+                </div>
+                <div class="inputfield">
+                    <label for="floor">Floor:</label>
+                    <input type="number" id="floor" name="floor" value="{{ floor or '' }}" required><br>
+                </div>
+                <div class="inputfield">
+                    <label for="column_count">Number of Columns:</label>
+                    <input type="number" id="column_count" name="column_count" value="{{ column_count or '' }}" required
+                        onchange="generateRowInputs()"><br>
+                </div>
+                <div id="rowInputs"></div>
+
+                <button type="submit" id='submit_button' name="add_room">{% if room_id %}Update Room{% else %}Add
+                    Room{% endif %}</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- List of buildings and rooms by floor -->
+    <div class="allroomdiv">
+        <h2 class="roomoverview">Building and Room Overview</h2>
+        {% for building in buildings %}
+        <div class="building-box">
+            <h3>{{ building[1] }}</h3> <!-- Building name -->
+
+            <div class="room-container">
+                {% for room in rooms %}
+                {% if room[6] == building[0] %}
+                <div class="singleroom">
+
+
+                    <div>
+                        <h5>Room {{ room[1] }} (Floor {{ room[5] }}):</h5>
+                        <p>
+                            Columns: {{ room[2] }} <br>
+                            Rows: {{ room[3] }} <br>
+                            Total Seats: {{ room[4] }}
+                        </p>
+                    </div>
+                    <div class="room-actions">
+                        <button type="button" class="room-view-button small-button"
+                            onclick="openRoomPopup('{{ room[0] }}')">
+                            View
+                        </button>
+                        <button type="button" class="room-edit-button small-button"
+                            onclick="openEditPopup('{{ room[0] }}', '{{ room[1] }}', '{{ room[5] }}', '{{ room[2] }}', '{{ room[6] }}')">Edit</button>
+                        <form method="POST" action="/delete_room" style="display:inline;" class="room-button">
+                            <input type="hidden" name="room_id" value="{{ room[0] }}">
+                            <button type="submit" class="room-delete-button small-button"
+                                onclick="return confirm('Are you sure you want to delete this room?');">Delete</button>
+                        </form>
+                    </div>
+
+                    <!-- Edit Room Popup -->
+                    <div id="editRoomPopup" class="room-popup">
+                        <div class="popup-content">
+                            <span class="close-popup" onclick="closeEditPopup()">&times;</span>
+                            <h2>Edit Room</h2>
+                            <form id="editRoomForm" method="POST" action="{{ url_for('update_room') }}"
+                                class="edit-form">
+                                <input type="hidden" id="edit_room_id" name="room_id">
+
+                                <div class="form-group">
+                                    <label for="edit_building_id">Building:</label>
+                                    <select name="building_id" id="edit_building_id" required>
+                                        {% for building in buildings %}
+                                        <option value="{{ building[0] }}">{{ building[1] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="edit_room_number">Room Number:</label>
+                                    <input type="text" id="edit_room_number" name="room_number" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="edit_floor">Floor:</label>
+                                    <input type="number" id="edit_floor" name="floor" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="edit_column_count">Number of Columns:</label>
+                                    <input type="number" id="edit_column_count" name="column_count" required min="1">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="edit_row_count">Number of Rows:</label>
+                                    <input type="number" id="edit_row_count" name="row_count" required min="1">
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="save-button">Save Changes</button>
+                                    <button type="button" class="cancel-button"
+                                        onclick="closeEditPopup()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Room Popup -->
+            <div id="roomPopup" class="room-popup">
+                <div class="popup-content">
+                    <span class="close-popup" onclick="closeRoomPopup()">&times;</span>
+                    <h2>Room Details</h2>
+                    <div class="popup-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Building:</span>
+                            <span id="popup-building"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Room Number:</span>
+                            <span id="popup-room-number"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Floor:</span>
+                            <span id="popup-floor"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Total Seats:</span>
+                            <span id="popup-total-seats"></span>
+                        </div>
+                    </div>
+
+                    <div class="room-layout">
+                        <h3>Room Layout</h3>
+                        <div class="layout-container" id="layout-container">
+                            <!-- Dynamic content will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function generateRowInputs() {
+            const columnCount = document.getElementById('column_count').value;
+            const rowInputsDiv = document.getElementById('rowInputs');
+            rowInputsDiv.innerHTML = ''; // Clear previous inputs
+
+            for (let i = 1; i <= columnCount; i++) {
+                const label = document.createElement('label');
+                label.textContent = `Total Rows for Column ${i}: `;
+                rowInputsDiv.appendChild(label);
+
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.name = `column_row_count_${i}`; // Unique name for each column's row count
+                input.placeholder = `Rows for Column ${i}`;
+                input.required = true; // Make it required
+                rowInputsDiv.appendChild(input);
+
+                rowInputsDiv.appendChild(document.createElement('br')); // Add a line break for better spacing
+            }
+        }
+
+        function populateEditForm(roomId, roomNumber, floor, columnCount, buildingId) {
+            document.getElementById('room_id').value = roomId;
+            document.getElementById('room_number').value = roomNumber;
+            document.getElementById('floor').value = floor;
+            document.getElementById('column_count').value = columnCount;
+
+            // Set the selected building
+            const buildingSelect = document.querySelector('select[name="building_id"]');
+            buildingSelect.value = buildingId;
+
+            // Generate row inputs based on the column count
+            generateRowInputs();
+
+            // Change button text to "Edit Room"
+            document.getElementById('submit_button').textContent = 'Edit Room';
+
+            // Scroll to the form section
+            document.querySelector('h2').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+
+    <script>
+
+
+        async function openRoomPopup(roomId) {
+            try {
+                // Fetch room data from the server
+                const response = await fetch(`/get_room_details/${roomId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch room details');
+                }
+                const roomData = await response.json();
+
+                // Update popup with room details
+                document.getElementById('popup-building').textContent = roomData.building_name;
+                document.getElementById('popup-room-number').textContent = roomData.room_number;
+                document.getElementById('popup-floor').textContent = roomData.floor;
+                document.getElementById('popup-total-seats').textContent = roomData.total_seats;
+
+                // Create visual layout
+                createRoomLayout(roomData.columns);
+
+                // Show popup
+                document.getElementById('roomPopup').style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to load room details');
+            }
+        }
+
+        function createRoomLayout(columns) {
+            const layoutContainer = document.getElementById('layout-container');
+            layoutContainer.innerHTML = ''; // Clear previous layout
+
+            // Create columns
+            Object.entries(columns).forEach(([colNum, colData]) => {
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'column';
+
+                // Add column number
+                const columnLabel = document.createElement('div');
+                columnLabel.className = 'column-label';
+                columnLabel.textContent = `Column ${colNum}`;
+                columnDiv.appendChild(columnLabel);
+
+                // Create seats for this column
+                colData.seats.forEach(seat => {
+                    const seatDiv = document.createElement('div');
+                    seatDiv.className = `seat ${seat.status === 1 ? 'occupied' : ''}`;
+                    seatDiv.textContent = `Row ${seat.row}`;
+                    columnDiv.appendChild(seatDiv);
+                });
+
+                // Add row count label
+                const rowCountLabel = document.createElement('div');
+                rowCountLabel.className = 'row-count-label';
+                rowCountLabel.textContent = `${colData.row_count} Rows`;
+                columnDiv.appendChild(rowCountLabel);
+
+                layoutContainer.appendChild(columnDiv);
+            });
+        }
+
+        function closeRoomPopup() {
+            document.getElementById('roomPopup').style.display = 'none';
+        }
+
+        // Close popup when clicking outside
+        window.onclick = function (event) {
+            const popup = document.getElementById('roomPopup');
+            if (event.target === popup) {
+                popup.style.display = 'none';
+            }
+        }
+
+    </script>
+
+    <script>
+
+
+        function openEditPopup(roomId, roomNumber, floor, columnCount, buildingId) {
+            // Populate the form fields
+            document.getElementById('edit_room_id').value = roomId;
+            document.getElementById('edit_room_number').value = roomNumber;
+            document.getElementById('edit_floor').value = floor;
+            document.getElementById('edit_column_count').value = columnCount;
+            document.getElementById('edit_row_count').value = columnCount; // Set initial row count same as column count
+            document.getElementById('edit_building_id').value = buildingId;
+
+            // Show the popup
+            document.getElementById('editRoomPopup').style.display = 'block';
+        }
+
+        function closeEditPopup() {
+            document.getElementById('editRoomPopup').style.display = 'none';
+        }
+
+        // Form validation
+        document.getElementById('editRoomForm').onsubmit = function (event) {
+            const columnCount = parseInt(document.getElementById('edit_column_count').value);
+            const rowCount = parseInt(document.getElementById('edit_row_count').value);
+
+            if (columnCount <= 0 || rowCount <= 0) {
+                alert('Column count and row count must be positive numbers');
+                event.preventDefault();
+                return false;
+            }
+
+            if (!confirm('Are you sure you want to update this room? This will reset all seat assignments.')) {
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
+
+
+    </script>
+
+    {% endblock %}
+</body>
+
+</html>

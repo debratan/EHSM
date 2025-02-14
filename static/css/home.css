@@ -1,0 +1,68 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('/static/images/exam1.jpg') no-repeat center center fixed, linear-gradient(to right, #4facfe, #00f2fe);
+    background-size: cover;
+    color: #ffffff;
+    height: 80vh; /* Full viewport height */
+    display: flex; /* Flexbox for centering */
+    flex-direction: column; /* Align items vertically */
+    justify-content: center; /* Centers vertically */
+    align-items: center; /* Centers horizontally */
+    text-align: center;
+}
+
+/* Overlay for Content */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Light black overlay */
+    z-index: -1; /* Places the overlay behind the content */
+}
+
+/* Header Styles */
+h1 {
+    margin: 0;
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    letter-spacing: 1.5px;
+}
+
+/* Navigation Bar Styles */
+nav {
+    margin-top: 20px; /* Space between the <h1> and navigation */
+    display: flex;
+    flex-direction: row; /* Arrange links horizontally */
+    gap: 20px; /* Space between links */
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    background: rgba(30, 144, 255, 0.8); /* Semi-transparent blue */
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+    color: #1e90ff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+nav a:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}

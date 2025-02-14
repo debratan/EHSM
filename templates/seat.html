@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seat Allocation</title>
+  <link rel="stylesheet" href="/static/css/seat.css">
+  <script src="/static/js/seat/s_top.js"></script>
+  <style>
+    .room-container {
+      margin: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+
+    .row {
+      display: flex;
+      justify-content: flex-start;
+      margin: 5px 0;
+    }
+
+    .seat {
+      width: 60px;
+      height: 40px;
+      margin: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #999;
+      font-size: 0.9em;
+    }
+
+    .seat.invalid {
+      border: 1px dashed #ccc;
+      background-color: #f8f8f8;
+    }
+
+    .seat.empty {
+      background-color: #f0f0f0;
+      border-style: dashed;
+    }
+
+    .seat.occupied {
+      background-color: #e1f5fe;
+      border: 1px solid #2196f3;
+    }
+
+    .row {
+      display: flex;
+      justify-content: flex-start;
+      margin: 5px 0;
+    }
+
+    .seating-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .legend {
+      margin: 10px;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 4px;
+    }
+
+    .legend-item {
+      display: inline-block;
+      margin-right: 20px;
+      padding: 5px;
+    }
+
+    .room-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .room-container {
+      margin: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+
+    .seating-layout {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .branch-header {
+      display: table-row;
+    }
+
+    .branch-header div {
+      display: table-cell;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ccc;
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+
+    .seat-row {
+      display: table-row;
+    }
+
+    .seat {
+      display: table-cell;
+      width: 60px;
+      height: 40px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid #999;
+      background-color: #e8ffe8;
+      /* Light green background */
+    }
+
+    .single-branch-header {
+      text-align: center;
+      font-weight: bold;
+      margin: 10px 0;
+      font-size: 1.2em;
+    }
+  </style>
+
+</head>
+
+<body>
+  {% extends "nav.html" %}
+  {% block content %}
+
+
+  <!-- <div class="statistics">...</div> -->
+
+    <!-- Add this new popup structure right before the closing body tag -->
+    <div class="statistics-popup active" id="statisticsPopup">
+      <div class="popup-header">
+        <h3>Statistics</h3>
+        <div class="popup-controls">
+          <button class="minimize-btn" id="minimizeStats">−</button>
+          <button class="close-btn" id="closeStats">×</button>
+        </div>
+      </div>
+      <div class="popup-content" id="popupContent">
+        <div class="stats-section">
+          <h4>Seat Statistics</h4>
+          <div id="seatStatistics">
+            <p>Total Seats: <span id="totalSeats">0</span></p>
+            <p>Allocated Seats: <span id="allocatedSeats">0</span></p>
+            <p>Available Seats: <span id="availableSeats">0</span></p>
+          </div>
+        </div>
+
+        <div class="stats-section">
+          <h4>Student Statistics</h4>
+          <div id="studentStatistics">
+            <p>Total Students: <span id="totalStudents">0</span></p>
+            <p>Allocated Students: <span id="allocatedStudents">0</span></p>
+            <p>Remaining Students: <span id="remainingStudents">0</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="show-stats-btn" id="showStats">Show Statistics</button>
+
+
+    
+  <div class="maincontainer">
+    
+    <div class="subcontainer">
+
+
+
+      <div class="seatdiv">
+        <h1>Seat Allocation</h1>
+
+        <form method="POST" id="allocationForm">
+          <div class="inputfield">
+            <label for="branch">Branch:</label>
+            <select name="branch" id="branch" onchange="loadDates()" required>
+              <option value="">Select Branch</option>
+              {% for exam in exams %}
+              <option value="{{ exam[0] }}">{{ exam[0] }}</option>
+              {% endfor %}
+            </select><br />
+          </div>
+          <div class="inputfield">
+            <label for="date">Exam Date:</label>
+            <select name="date" id="date" onchange="loadTimes()" required>
+              <option value="">Select Date</option>
+            </select><br />
+          </div>
+          <div class="inputfield">
+            <label for="time">Exam Time:</label>
+            <select name="time" id="time" required>
+              <option value="">Select Time</option>
+            </select><br />
+          </div>
+          <button type="button" id="allocateButton">Allocate Seats</button>
+        </form>
+      </div>
+
+      <div class="select-branch">
+        <h2>Allocated Seats</h2>
+        <table id="allocatedSeatsTable" border="1">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Branch</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows will be added here -->
+          </tbody>
+        </table>
+
+        <div class="pattern-select">
+          <label for="arrangementPattern">Enable Mix Arrangement Pattern:</label>
+          <input class="checkbox" type="checkbox" id="arrangementPattern" name="arrangementPattern" />
+        </div>
+
+        <div>
+          <select name="seatpattern" id="seatpattern">
+            <option value="one">One by One</option>
+            <option value="side">Side by Side</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+
+
+    
+
+  </div>
+
+  <div class="main-visual">
+
+    <h1>Room Visualization</h1>
+    <div id="roomContainer"></div>
+
+    <button type="button" id="arrangeSeatsButton" onclick="arrangeSeats()">
+      Arrange Seats
+    </button>
+
+    <h2>Seating Arrangement Visualization</h2>
+    <!-- <div id="visualizationContainer"></div> -->
+
+    <div id="seating-plan">
+      <!-- Buildings will be dynamically added here -->
+    </div>
+  </div>
+
+  <button type="button" id="printseat">
+    Print seat pattern
+  </button>
+
+
+
+
+  <script src="/static/js/seat/s_bottom.js"></script>
+
+  <script>
+    // Modify the room rendering part in your JavaScript:
+    function renderSeatingPlan(seatingPlan) {
+      const container = document.getElementById('seating-plan');
+      container.innerHTML = '';
+
+      for (const [building, floors] of Object.entries(seatingPlan)) {
+        const buildingDiv = document.createElement('div');
+        buildingDiv.innerHTML = `<h2 class="building-name">${building}</h2>`;
+
+        for (const [floor, rooms] of Object.entries(floors)) {
+          const floorDiv = document.createElement('div');
+          floorDiv.innerHTML = `<h3 class="floor-name">Floor: ${floor}</h3>`;
+
+          rooms.forEach(room => {
+            const roomDiv = document.createElement('div');
+            roomDiv.className = 'room-container';
+            roomDiv.innerHTML = `<h4>Room: ${room.room_number}</h4>`;
+
+            // Get branch names
+            const branchNames = Object.entries(room)
+              .filter(([key]) => key.startsWith('branch'))
+              .map(([_, value]) => value);
+
+            if (branchNames.length === 1) {
+              // For single branch, show it outside seating layout
+              const branchHeader = document.createElement('div');
+              branchHeader.className = 'single-branch-header';
+              branchHeader.textContent = branchNames[0].replace(/_/g, ' ');
+              roomDiv.appendChild(branchHeader);
+            }
+
+            const seatingDiv = document.createElement('div');
+            seatingDiv.className = 'seating-layout';
+
+            // Get total columns from seating array
+            const totalColumns = room.seating[0].length;
+
+            if (branchNames.length > 1) {
+              // Only create branch header row for multiple branches
+              const headerRow = document.createElement('div');
+              headerRow.className = 'branch-header';
+
+              for (let i = 0; i < totalColumns; i++) {
+                const headerCell = document.createElement('div');
+                headerCell.className = 'branch-header-cell';
+                const branchIndex = i % branchNames.length;
+                headerCell.textContent = branchNames[branchIndex].replace(/_/g, ' ');
+                headerRow.appendChild(headerCell);
+              }
+              seatingDiv.appendChild(headerRow);
+            }
+
+            // Create seats
+            room.seating.forEach(row => {
+              const rowDiv = document.createElement('div');
+              rowDiv.className = 'seat-row';
+
+              row.forEach(seat => {
+                const seatDiv = document.createElement('div');
+                seatDiv.className = 'seat';
+                seatDiv.textContent = seat || '';
+                rowDiv.appendChild(seatDiv);
+              });
+
+              seatingDiv.appendChild(rowDiv);
+            });
+
+            roomDiv.appendChild(seatingDiv);
+            floorDiv.appendChild(roomDiv);
+          });
+
+          buildingDiv.appendChild(floorDiv);
+        }
+        container.appendChild(buildingDiv);
+      }
+    }
+  </script>
+
+
+
+
+  <script>
+
+    document.getElementById('printseat').addEventListener('click', function () {
+      try {
+        // Get the entire seating plan HTML
+        const seatingPlanHTML = document.getElementById('seating-plan').innerHTML;
+
+        // Store the HTML content in sessionStorage
+        sessionStorage.setItem('seatingPlanHTML', seatingPlanHTML);
+
+        // Open seat_pdf.html in a new window
+        window.open('seat_pdf.html', '_blank');
+      } catch (error) {
+        console.error('Error preparing print data:', error);
+      }
+    });
+  </script>
+
+
+  {% endblock %}
+</body>
+
+</html>
